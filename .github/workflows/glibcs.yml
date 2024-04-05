@@ -77,10 +77,10 @@ jobs:
           python build-many-glibcs.py ./ checkout
       - name: Build Host-libraries
         run: |
-          python build-many-glibcs.py -j 160 ./ host-libraries
+          python build-many-glibcs.py -j $(nproc) ./ host-libraries
       - name: Build Cross-compilers
         run: |
-          python build-many-glibcs.py -j 160 ./ compilers
+          python build-many-glibcs.py -j $(nproc) ./ compilers
       - name: Tar Compilers
         run: |
           find ./install/compilers -type d -exec tar czvf {}.tar.gz {} \;
@@ -92,7 +92,7 @@ jobs:
             ./install/compilers      
       - name: Build glibcs
         run: |
-          python build-many-glibcs.py -j 160 ./ glibcs
+          python build-many-glibcs.py -j $(nproc) ./ glibcs
       - name: Tar glibcs
         run: |
           find ./install/glibcs -type d -exec tar czvf {}.tar.gz {} \;
