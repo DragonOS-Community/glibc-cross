@@ -77,34 +77,34 @@ jobs:
           bash ./install_deps.sh
       - name: Checkout
         run: |
-          python build-${{matrix.arch}} ./ checkout
+          python arch/${{matrix.arch}}/build-${{matrix.arch}} ./ checkout
       - name: Build Host-libraries
         run: |
-          python build-${{matrix.arch}} -j $(nproc) ./ host-libraries
+          python arch/${{matrix.arch}}/build-${{matrix.arch}} -j $(nproc) ./ host-libraries
       - name: Build Cross-compilers
         run: |
-          python build-${{matrix.arch}} -j $(nproc) ./ compilers
+          python arch/${{matrix.arch}}/build-${{matrix.arch}} -j $(nproc) ./ compilers
       - name: Tar Compilers
         run: |
-          find ./install/compilers -type d -exec tar czvf {}.tar.gz {} \;
+          find arch/${{matrix.arch}}/install/compilers -type d -exec tar czvf {}.tar.gz {} \;
       - name: Upload Compilers
         uses: actions/upload-artifact@v4
         with:
           name: compilers-${{matrix.arch}}
           path: |
-            ./install/compilers      
+            arch/${{matrix.arch}}/install/compilers      
       - name: Build glibcs
         run: |
-          python build-many-glibcs.py -j $(nproc) ./ glibcs
+          python arch/${{matrix.arch}}/build-many-glibcs.py -j $(nproc) ./ glibcs
       - name: Tar glibcs
         run: |
-          find ./install/glibcs -type d -exec tar czvf {}.tar.gz {} \;
+          find arch/${{matrix.arch}}/install/glibcs -type d -exec tar czvf {}.tar.gz {} \;
       - name: Upload glibcs
         uses: actions/upload-artifact@v4
         with:
           name: glibcs-${{matrix.arch}}
           path: |
-            ./install/glibcs   
+            arch/${{matrix.arch}}/install/glibcs   
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [meta, build]
