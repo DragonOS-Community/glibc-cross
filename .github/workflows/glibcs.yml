@@ -95,7 +95,7 @@ jobs:
             arch/${{matrix.arch}}/install/compilers      
       - name: Build glibcs
         run: |
-          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) ./ glibcs
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} glibcs
       - name: Tar glibcs
         run: |
           find arch/${{matrix.arch}}/install/glibcs -type d -exec tar czvf {}.tar.gz {} \;
