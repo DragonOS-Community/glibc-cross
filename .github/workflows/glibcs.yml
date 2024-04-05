@@ -77,13 +77,13 @@ jobs:
           bash ./install_deps.sh
       - name: Checkout
         run: |
-          python arch/${{matrix.arch}}/build-${{matrix.arch}} ./ checkout
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py ./ checkout
       - name: Build Host-libraries
         run: |
-          python arch/${{matrix.arch}}/build-${{matrix.arch}} -j $(nproc) ./ host-libraries
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) ./ host-libraries
       - name: Build Cross-compilers
         run: |
-          python arch/${{matrix.arch}}/build-${{matrix.arch}} -j $(nproc) ./ compilers
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) ./ compilers
       - name: Tar Compilers
         run: |
           find arch/${{matrix.arch}}/install/compilers -type d -exec tar czvf {}.tar.gz {} \;
@@ -95,7 +95,7 @@ jobs:
             arch/${{matrix.arch}}/install/compilers      
       - name: Build glibcs
         run: |
-          python arch/${{matrix.arch}}/build-many-glibcs.py -j $(nproc) ./ glibcs
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) ./ glibcs
       - name: Tar glibcs
         run: |
           find arch/${{matrix.arch}}/install/glibcs -type d -exec tar czvf {}.tar.gz {} \;
