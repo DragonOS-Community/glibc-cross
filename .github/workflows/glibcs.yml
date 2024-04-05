@@ -67,6 +67,9 @@ jobs:
           path: CHANGELOG.md
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [x86_64,riscv64imac,riscv64gc-lp64,riscv64gc-lp64d,aarch64]
     steps:
       - uses: actions/checkout@v4
       - name: Install Dependencies
@@ -74,20 +77,20 @@ jobs:
           bash ./install_deps.sh
       - name: Checkout
         run: |
-          python build-many-glibcs.py ./ checkout
+          python build-${{matrix.arch}} ./ checkout
       - name: Build Host-libraries
         run: |
-          python build-many-glibcs.py -j $(nproc) ./ host-libraries
+          python build-${{matrix.arch}} -j $(nproc) ./ host-libraries
       - name: Build Cross-compilers
         run: |
-          python build-many-glibcs.py -j $(nproc) ./ compilers
+          python build-${{matrix.arch}} -j $(nproc) ./ compilers
       - name: Tar Compilers
         run: |
           find ./install/compilers -type d -exec tar czvf {}.tar.gz {} \;
       - name: Upload Compilers
         uses: actions/upload-artifact@v4
         with:
-          name: compilers
+          name: compilers-${{matrix.arch}}
           path: |
             ./install/compilers      
       - name: Build glibcs
@@ -99,7 +102,7 @@ jobs:
       - name: Upload glibcs
         uses: actions/upload-artifact@v4
         with:
-          name: glibcs
+          name: glibcs-${{matrix.arch}}
           path: |
             ./install/glibcs   
   release:
