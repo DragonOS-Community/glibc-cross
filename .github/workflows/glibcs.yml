@@ -77,13 +77,13 @@ jobs:
           bash ./install_deps.sh
       - name: Checkout
         run: |
-          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py ./ checkout
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py arch/${{matrix.arch}} checkout
       - name: Build Host-libraries
         run: |
-          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) ./ host-libraries
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} host-libraries
       - name: Build Cross-compilers
         run: |
-          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) ./ compilers
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} compilers
       - name: Tar Compilers
         run: |
           find arch/${{matrix.arch}}/install/compilers -type d -exec tar czvf {}.tar.gz {} \;
