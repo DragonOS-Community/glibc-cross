@@ -69,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: [x86_64,riscv64imac,riscv64gc-lp64,riscv64gc-lp64d,aarch64]
+        arch: [x86_64-gnu,x86_64-linux-gnu,riscv64imac,riscv64gc-lp64,riscv64gc-lp64d,aarch64]
     steps:
       - uses: actions/checkout@v4
       - name: Install Dependencies
@@ -84,15 +84,15 @@ jobs:
       - name: Build Cross-compilers
         run: |
           python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} compilers
-      - name: Tar Compilers
-        run: |
-          find arch/${{matrix.arch}}/install/compilers -type d -exec tar czvf {}.tar.gz {} \;
-      - name: Upload Compilers
-        uses: actions/upload-artifact@v4
-        with:
-          name: compilers-${{matrix.arch}}
-          path: |
-            arch/${{matrix.arch}}/install/compilers      
+      # - name: Tar Compilers
+      #   run: |
+      #     find arch/${{matrix.arch}}/install/compilers -type d -exec tar czvf {}.tar.gz {} \;
+      # - name: Upload Compilers
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: compilers-${{matrix.arch}}
+      #     path: |
+      #       arch/${{matrix.arch}}/install/compilers      
       - name: Build glibcs
         run: |
           python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} glibcs
