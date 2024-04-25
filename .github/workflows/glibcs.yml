@@ -86,6 +86,7 @@ jobs:
           python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} compilers
       # - name: Tar Compilers
       #   run: |
+      #     mkdir -p arch/${{matrix.arch}}/release/compilers
       #     find arch/${{matrix.arch}}/install/compilers -type d -exec tar czvf arch/${{matrix.arch}}/release/compilers/{}.tar.gz {} \;
       # - name: Upload Compilers
       #   uses: actions/upload-artifact@v4
@@ -98,6 +99,7 @@ jobs:
           python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} glibcs
       - name: Tar glibcs
         run: |
+          mkdir -p arch/${{matrix.arch}}/release/glibcs
           find arch/${{matrix.arch}}/install/glibcs -type d -exec tar czvf arch/${{matrix.arch}}/release/glibcs/{}.tar.gz {} \;
       - name: Upload glibcs
         uses: actions/upload-artifact@v4
