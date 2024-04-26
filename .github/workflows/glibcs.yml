@@ -24,7 +24,7 @@ jobs:
         run: |
           git init
           cp $GITHUB_WORKSPACE/temp/.git/config ./.git
-          rm -rf $GITHUB_WORKSPACE/temp
+          rm -rf d/temp
           # git config remote.origin.fetch '+refs/*:refs/*'
           git fetch --filter=tree:0 # --update-head-ok
           git reset --hard origin/$(git branch --show-current) || true
@@ -88,7 +88,7 @@ jobs:
       #   run: |
       #     mkdir -p arch/${{matrix.arch}}/release/compilers
       #     cd arch/${{matrix.arch}}/install/compilers
-      #     find . -type d -maxdepth 1 -exec tar czvf arch/${{matrix.arch}}/release/compilers/{}.tar.gz {} \;
+      #     find . -type d -mindepth 1 -maxdepth 1 -exec tar czvf ${{GITHUB_WORKSPACE}}/arch/${{matrix.arch}}/release/compilers/{}.tar.gz {} \;
       # - name: Upload Compilers
       #   uses: actions/upload-artifact@v4
       #   with:
@@ -102,7 +102,7 @@ jobs:
         run: |
           mkdir -p arch/${{matrix.arch}}/release/glibcs
           cd arch/${{matrix.arch}}/install/glibcs
-          find ./ -type d -maxdepth 1 -exec tar czvf arch/${{matrix.arch}}/release/glibcs/{}.tar.gz {} \;
+          find . -type d -mindepth 1 -maxdepth 1 -exec tar czvf ${{GITHUB_WORKSPACE}}/arch/${{matrix.arch}}/release/glibcs/{}.tar.gz {} \;
       - name: Upload glibcs
         uses: actions/upload-artifact@v4
         with:
