@@ -1,11 +1,7 @@
 name: glibcs
 
 # on: [push,pull_request]
-on:
-  push:
-    tags:
-      - "v*"
-  workflow_dispatch
+on: [workflow_dispatch]
 
 jobs:
   meta:
