@@ -2,8 +2,8 @@ name: glibcs
 
 # on: [push,pull_request]
 on:
-  push: 
-    tags: 
+  push:
+    tags:
       - "v*"
 
 jobs:
@@ -77,7 +77,7 @@ jobs:
           bash ./install_deps.sh
       - name: Checkout
         run: |
-          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py arch/${{matrix.arch}} checkout
+          python arch/${{matrix.arch}}/build-${{matrix.arch}}.py --shallow arch/${{matrix.arch}} checkout
       - name: Build Host-libraries
         run: |
           python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} host-libraries
@@ -94,7 +94,7 @@ jobs:
       #   with:
       #     name: compilers-${{matrix.arch}}
       #     path: |
-      #       arch/${{matrix.arch}}/release/compilers      
+      #       arch/${{matrix.arch}}/release/compilers
       - name: Build glibcs
         run: |
           python arch/${{matrix.arch}}/build-${{matrix.arch}}.py -j $(nproc) arch/${{matrix.arch}} glibcs
@@ -108,7 +108,7 @@ jobs:
         with:
           name: glibcs-${{matrix.arch}}
           path: |
-            arch/${{matrix.arch}}/release/glibcs  
+            arch/${{matrix.arch}}/release/glibcs
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [meta, build]
@@ -132,4 +132,4 @@ jobs:
           files: |
             assets/*
           prerelease: ${{ needs.meta.outputs.prerelease != 'false' }}
-        
+
