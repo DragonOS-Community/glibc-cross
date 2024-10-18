@@ -58,7 +58,7 @@ jobs:
         run: |
           mkdir -p arch/${{matrix.arch}}/release/glibcs
           cd arch/${{matrix.arch}}/install/glibcs
-          find . -type d -mindepth 1 -maxdepth 1 -exec tar czvf ${GITHUB_WORKSPACE}/arch/${{matrix.arch}}/release/glibcs/{}.tar.gz {} \;
+          find . -type d -mindepth 1 -maxdepth 1 -exec tar czvf ${GITHUB_WORKSPACE}/arch/${{matrix.arch}}/release/glibcs/glibc-${{env.GLIBC_VERSION}}-{}.tar.gz {} \;
       - name: Upload glibcs
         uses: actions/upload-artifact@v4
         with:
@@ -77,15 +77,11 @@ jobs:
 
       - name: Cleanup files
         run: |
-          mv -vf assets/changelog/* .
           cd assets
           find . -type f | while read f; do mv -fvt . $f; done
 
       - name: Release to Github
         uses: softprops/action-gh-release@v1
         with:
-          body_path: CHANGELOG.md
           files: |
             assets/*
-          prerelease: ${{ needs.meta.outputs.prerelease != 'false' }}
-
